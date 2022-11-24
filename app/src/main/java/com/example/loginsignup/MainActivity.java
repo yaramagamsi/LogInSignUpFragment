@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnsignup,btnlogin;
-    private FrameLayout framelay;
+    //private FrameLayout framelay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnsignup = findViewById(R.id.btnSignupMain);
         btnlogin = findViewById(R.id.btnLoginMain);
-        framelay = findViewById(R.id.FrameLayoutMain);
+        //framelay = findViewById(R.id.FrameLayoutMain);
     }
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,13 +108,14 @@ public class ProductsFragments extends Fragment {
 
                 // (String category, String name, int price, String owner, String phone)
                 Product p = new Product(category , name , price, "","");
-                Map<String, Product> books= new HashMap<>();
+                //Map<String, Product> products= new HashMap<>();
 
-                fbs.getFire().collection("books").document("LA")
+                fbs.getFire().collection("products").document("LA")
                         .set(p)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                gotoLoginFragment();
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
                             }
                         })
@@ -125,5 +127,11 @@ public class ProductsFragments extends Fragment {
                         });
             }
         });
+    }
+
+    public void gotoLoginFragment() {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.FrameLayoutMain, new LogInFragment());
+        ft.commit();
     }
 }

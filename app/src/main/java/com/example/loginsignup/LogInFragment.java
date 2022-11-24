@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +107,9 @@ public class LogInFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // PUT YOUR CODE HERE
+                                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                    ft.replace(R.id.FrameLayoutMain, new ProductsFragments());
+                                    ft.commit();
                                 } else {
                                     Toast.makeText(getActivity(),"Incorrect Username or Password!",Toast.LENGTH_SHORT).show();
                                 }

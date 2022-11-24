@@ -7,52 +7,74 @@
     tools:context=".ProductsFragments">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/FrameLayoutProducts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="@+id/ivPhotoProducts"
+        app:layout_constraintStart_toEndOf="@+id/ivPhotoProducts">
 
         <ImageView
             android:id="@+id/ivPhotoProducts"
-            android:layout_width="170dp"
-            android:layout_height="159dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="72dp"
+            android:layout_marginBottom="69dp"
             android:src="@drawable/invisible"
-            tools:layout_editor_absoluteX="37dp"
-            tools:layout_editor_absoluteY="99dp" />
+            app:layout_constraintBottom_toTopOf="@+id/spnCategoryProducts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/etNameProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginBottom="16dp"
             android:ems="10"
             android:hint="Product name"
             android:inputType="textEmailAddress"
-            tools:layout_editor_absoluteX="44dp"
-            tools:layout_editor_absoluteY="371dp" />
+            app:layout_constraintBottom_toTopOf="@+id/etPriceProducts"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnCategoryProducts" />
 
         <EditText
             android:id="@+id/etPriceProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="90dp"
             android:ems="10"
             android:hint="Price"
             android:inputType="number"
-            tools:layout_editor_absoluteX="44dp"
-            tools:layout_editor_absoluteY="463dp" />
+            app:layout_constraintBottom_toTopOf="@+id/btnAddProducts"
+            app:layout_constraintStart_toStartOf="@+id/etNameProducts"
+            app:layout_constraintTop_toBottomOf="@+id/etNameProducts" />
 
         <Spinner
             android:id="@+id/spnCategoryProducts"
-            android:layout_width="170dp"
-            android:layout_height="31dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="76dp"
             android:entries="@array/category_name"
-            tools:layout_editor_absoluteX="225dp"
-            tools:layout_editor_absoluteY="168dp" />
+            app:layout_constraintBottom_toTopOf="@+id/etNameProducts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivPhotoProducts" />
 
         <Button
             android:id="@+id/btnAddProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="116dp"
             android:text="Add"
-            tools:layout_editor_absoluteX="160dp"
-            tools:layout_editor_absoluteY="583dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/etPriceProducts"
+            app:layout_constraintTop_toBottomOf="@+id/etPriceProducts" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

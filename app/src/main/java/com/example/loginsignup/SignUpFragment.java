@@ -2,14 +2,21 @@ package com.example.loginsignup;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +30,8 @@ public class SignUpFragment extends Fragment {
 
     private EditText etEmail , etPassword, etConfirmPassword;
     private Button btnSignup;
+    private FirebaseServices fbs;
+    // TODO: define firebaseservices property
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +91,7 @@ public class SignUpFragment extends Fragment {
         etPassword = getView().findViewById(R.id.etPasswordSignup);
         etConfirmPassword = getView().findViewById(R.id.etConfirmPasswordSignup);
         btnSignup = getView().findViewById(R.id.btnSignupSignup);
+        fbs = FirebaseServices.getInstance();
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,17 +105,7 @@ public class SignUpFragment extends Fragment {
                     Toast.makeText(getActivity(),"Some fields are missing!",Toast.LENGTH_SHORT).show();
                 }
 
-                if ( !isEmailValid(email))
-                {
-                    Toast.makeText(getActivity(),"Email is incorrect!",Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
-                if ( !isPasswordValid(password))
-                {
-                    Toast.makeText(getActivity(),"Password is incorrect!",Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 if (!password.equals(confirmPassword))
                 {
@@ -113,26 +113,20 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
 
-
+                fbs.getAuth().createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Choose what to do
+                                } else {
+                                    Log.e("TAG", task.getException().getMessage());
+                                    Toast.makeText(getActivity(),"Incorrect Username or Password!",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
-            private boolean isPasswordValid(String password)
-            {
-                Pattern pattern;
-                Matcher matcher;
-                final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
-                pattern = Pattern.compile(PASSWORD_PATTERN);
-                matcher = pattern.matcher(password);
 
-                return matcher.matches();
-            }
-
-            public boolean isEmailValid( String email)
-            {
-                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(email);
-                return matcher.matches();
-            }
         });
     }
 }
