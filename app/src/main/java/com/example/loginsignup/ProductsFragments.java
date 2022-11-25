@@ -106,9 +106,9 @@ public class ProductsFragments extends Fragment {
                 Integer.valueOf(price);
                 String category = spnCategory.getSelectedItem().toString();
 
-                // (String category, String name, int price, String owner, String phone)
-                Product p = new Product(category , name , price, "","");
-                //Map<String, Product> products= new HashMap<>();
+                // (String category, String name, int price, String owner, String photo)
+                Product p = new Product("category", "name", "price", "","");
+                Map<String, Product> products= new HashMap<>();
 
                 fbs.getFire().collection("products").document("LA")
                         .set(p)
