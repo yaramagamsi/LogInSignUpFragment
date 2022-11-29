@@ -1,16 +1,18 @@
 package com.example.loginsignup;
 
+import android.widget.ImageView;
+
 public class Product {
     private String category;
     private String name;
     private int price;
     private String owner;
-    private String photo;
+    private ImageView photo;
 
     public Product(String category1, String s, String category, String name, String price)
     {    }
 
-    public Product(String category, String name, int price, String   owner, String photo)
+    public Product(String category, String name, int price, String owner, ImageView photo)
     {
         this.category = category;
         this.name = name;
@@ -42,9 +44,9 @@ public class Product {
         this.owner = owner;
     }
 
-    public String getPhoto()   {  return photo;  }
+    public ImageView getPhoto()   {  return photo;  }
 
-    public void setPhoto(String photo)
+    public void setPhoto(ImageView photo)
     {
         this.photo = photo;
     }

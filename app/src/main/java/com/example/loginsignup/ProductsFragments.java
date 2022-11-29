@@ -1,13 +1,17 @@
 package com.example.loginsignup;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -94,6 +99,13 @@ public class ProductsFragments extends Fragment {
         etName = getView().findViewById(R.id.etNameProducts);
         etPrice = getView().findViewById(R.id.etPriceProducts);
         ivPhoto = getView().findViewById(R.id.ivPhotoProducts);
+        ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,3);
+            }
+        });
         btnAdd = getView().findViewById(R.id.btnAddProducts);
         spnCategory = getView().findViewById(R.id.spnCategoryProducts);
         fbs = FirebaseServices.getInstance();
@@ -107,15 +119,16 @@ public class ProductsFragments extends Fragment {
                 String category = spnCategory.getSelectedItem().toString();
 
                 // (String category, String name, int price, String owner, String photo)
-                Product p = new Product("category", "name", "price", "","");
-                Map<String, Product> products= new HashMap<>();
+                Product p = new Product(category, name, price, name,"");
+                //Map<String, Product> products= new HashMap<>();
 
                 fbs.getFire().collection("products").document("LA")
                         .set(p)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                gotoLoginFragment();
+                                //gotoLoginFragment();
+                                Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
                             }
                         })
@@ -127,6 +140,14 @@ public class ProductsFragments extends Fragment {
                         });
             }
         });
+    }
+
+    private void startIntentSenderForResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==RESULT_OK&& data != null){
+            Uri selectedImage = data.getData();
+            ivPhoto.setImageURI(selectedImage);
+        }
     }
 
     public void gotoLoginFragment() {
