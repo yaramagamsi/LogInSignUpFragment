@@ -119,7 +119,7 @@ public class ProductsFragments extends Fragment {
                 String category = spnCategory.getSelectedItem().toString();
 
                 // (String category, String name, int price, String owner, String photo)
-                Product p = new Product(category, name, price, name,"");
+                Product p = new Product(category, name, price, "","");
                 //Map<String, Product> products= new HashMap<>();
 
                 fbs.getFire().collection("products").document("LA")
