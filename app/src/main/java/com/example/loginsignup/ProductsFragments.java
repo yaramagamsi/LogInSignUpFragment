@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +38,7 @@ import java.util.Map;
  */
 public class ProductsFragments extends Fragment {
 
-    private EditText etName , etPrice;
+    private EditText etName, etPrice;
     private ImageView ivPhoto;
     private Button btnAdd;
     private Spinner spnCategory;
@@ -102,8 +105,8 @@ public class ProductsFragments extends Fragment {
         ivPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new  Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent,3);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 3);
             }
         });
         btnAdd = getView().findViewById(R.id.btnAddProducts);
@@ -119,40 +122,47 @@ public class ProductsFragments extends Fragment {
                 String category = spnCategory.getSelectedItem().toString();
 
                 // (String category, String name, int price, String owner, String photo)
-                Product p = new Product(category, name, price, "","");
+                Product p = new Product(category, name, price, "", "");
                 //Map<String, Product> products= new HashMap<>();
 
-                fbs.getFire().collection("products").document("LA")
-                        .set(p)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            }
+
+
+            public void addProduct(Product p) {
+                fbs.getFire().collection("Products")
+                        .add(p)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
-                                //gotoLoginFragment();
-                                Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            public void onSuccess(DocumentReference documentReference) {
+
+                                Log.d(TAG, "DocumentSnapshot added with ID:" + documentReference.getId());
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
+
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
+                                Log.v(TAG, "Error adding document", e);
+
                             }
                         });
+
+            }
+
+
+            private void startIntentSenderForResult(int requestCode, int resultCode, Intent data) {
+                // super.onActivityResult(requestCode, resultCode, data);
+                if (requestCode == RESULT_OK && data != null) {
+                    Uri selectedImage = data.getData();
+                    ivPhoto.setImageURI(selectedImage);
+                }
+            }
+
+            public void gotoLoginFragment() {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.FrameLayoutMain, new LogInFragment());
+                ft.commit();
             }
         });
-    }
-
-    private void startIntentSenderForResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==RESULT_OK&& data != null){
-            Uri selectedImage = data.getData();
-            ivPhoto.setImageURI(selectedImage);
-        }
-    }
-
-    public void gotoLoginFragment() {
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.FrameLayoutMain, new LogInFragment());
-        ft.commit();
     }
 }
