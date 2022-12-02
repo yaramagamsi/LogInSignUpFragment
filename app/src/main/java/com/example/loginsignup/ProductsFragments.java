@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,28 +125,32 @@ public class ProductsFragments extends Fragment {
                 Product p = new Product(category, name, price, "","");
                 //Map<String, Product> products= new HashMap<>();
 
-                fbs.getFire().collection("products").document("LA")
-                        .set(p)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                //gotoLoginFragment();
-                                Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
+
+
+
+                public void addProduct(Product p) {
+                    fire.collection("Products")
+                            .add(p)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                           @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                    Log.d(TAG, "DocumentSnapshot added with ID:" + documentReference.getId());
+                                }
+                            })
+                          .addOnFailureListener(new OnFailureListener() {
+
+                              @Override
+                            public void onFailure (@NonNull Exception e) { Log.v(TAG, "Error adding document", e);
+
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
             }
         });
     }
 
+
     private void startIntentSenderForResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+       // super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==RESULT_OK&& data != null){
             Uri selectedImage = data.getData();
             ivPhoto.setImageURI(selectedImage);

@@ -48,9 +48,11 @@
             android:id="@+id/tvForgotPasswordLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="176dp"
-            tools:layout_editor_absoluteY="551dp" />
+            android:layout_marginTop="33dp"
+            android:text="forgot password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLoginLogin" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
